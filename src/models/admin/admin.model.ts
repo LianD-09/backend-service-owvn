@@ -9,16 +9,13 @@ export class Admin {
   userName: string;
 
   @Field(() => String, {})
-  password: string;
-
-  @Field(() => String, {})
   fullName: string;
 
   @Field(() => String, {})
   dob: string;
 
-  @Field(() => String, {})
-  phone: string;
+  @Field(() => String, { nullable: true })
+  phone?: string;
 
   @Field(() => String, {})
   email: string;

@@ -8,7 +8,9 @@ CREATE TABLE `User` (
     `phone` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `gender` ENUM('MALE', 'FEMALE') NOT NULL,
-    `status` ENUM('ACTIVE', 'BLOCK') NOT NULL,
+    `status` ENUM('ACTIVE', 'LOCKED') NOT NULL DEFAULT 'ACTIVE',
+    `token` VARCHAR(191) NULL,
+    `isVerified` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `User_userName_key`(`userName`),
     UNIQUE INDEX `User_email_key`(`email`),
@@ -23,7 +25,9 @@ CREATE TABLE `Admin` (
     `fullName` VARCHAR(191) NOT NULL,
     `dob` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
-    `phone` VARCHAR(191) NOT NULL,
+    `phone` VARCHAR(191) NULL,
+    `token` VARCHAR(191) NULL,
+    `isVerified` BOOLEAN NOT NULL DEFAULT false,
 
     UNIQUE INDEX `Admin_userName_key`(`userName`),
     UNIQUE INDEX `Admin_email_key`(`email`),

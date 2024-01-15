@@ -1,7 +1,7 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { Gender, Status } from '@prisma/client';
 
-@ObjectType('User', { isAbstract: true})
+@ObjectType('User', { isAbstract: true })
 export class User {
   @Field(() => Number, {})
   id: number;
@@ -10,14 +10,11 @@ export class User {
   userName: string;
 
   @Field(() => String, {})
-  password: string;
-
-  @Field(() => String, {})
   fullName: string;
 
   @Field(() => String, {})
   dob: string;
-  
+
   @Field(() => String, {})
   phone: string;
 

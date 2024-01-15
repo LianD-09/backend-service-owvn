@@ -3,7 +3,7 @@ import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 import { PrismaService } from '../../prisma/prisma.service';
 import { hash } from 'bcryptjs';
-import { Status } from '@prisma/client';
+import { Prisma, Status } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -35,6 +35,25 @@ export class UserService {
 
   async findOne(id: number) {
     return await this.prismaService.user.findFirst({ where: { id } });
+  }
+
+  async findBy(dto: Prisma.UserWhereInput) {
+    return await this.prismaService.user.findFirst(
+      {
+        where: {
+          OR: [
+            {
+              email: dto.email
+            },
+            {
+              userName: dto.userName
+            },
+            {
+              id: dto.id
+            }
+          ]
+        }
+      })
   }
 
   async update(id: number, dto: UpdateUserInput) {

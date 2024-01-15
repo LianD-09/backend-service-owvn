@@ -21,25 +21,27 @@ enum Gender {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  userName String  @unique
-  password String
-  fullName String
-  dob      String
-  phone    String
-  email    String  @unique
-  gender   Gender
-  status   Status  @default(ACTIVE)
-  token    String?
+  id         Int     @id @default(autoincrement())
+  userName   String  @unique
+  password   String
+  fullName   String
+  dob        String
+  phone      String
+  email      String  @unique
+  gender     Gender
+  status     Status  @default(ACTIVE)
+  token      String?
+  isVerified Boolean @default(false)
 }
 
 model Admin {
-  id       Int     @id @default(autoincrement())
-  userName String  @unique
-  password String
-  fullName String
-  dob      String
-  email    String  @unique
-  phone    String?
-  token    String?
+  id         Int     @id @default(autoincrement())
+  userName   String  @unique
+  password   String
+  fullName   String
+  dob        String
+  email      String  @unique
+  phone      String?
+  token      String?
+  isVerified Boolean @default(false)
 }

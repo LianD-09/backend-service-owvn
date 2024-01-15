@@ -5,7 +5,8 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { JwtModule } from '@nestjs/jwt';
 import { AdminModule } from '../models/admin/admin.module';
 import { UserModule } from '../models/user/user.module';
-import { MailModule } from '../mail/mail.module';
+import { MailModule } from '../models/mail/mail.module';
+import { ConfirmModule } from '../models/confirm/confirm.module';
 
 @Module({
   providers: [
@@ -17,7 +18,8 @@ import { MailModule } from '../mail/mail.module';
     JwtModule,
     AdminModule,
     UserModule,
-    MailModule
+    MailModule,
+    ConfirmModule,
   ],
   exports: [
     AuthService,

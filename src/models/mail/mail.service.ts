@@ -25,7 +25,7 @@ export class MailService {
             })
             .then()
             .catch((err) => {
-                this.logger.debug(`Send mail error: ${JSON.stringify(err.response)}`);
+                this.logger.debug(`Send mail error: ${JSON.stringify(err)}`);
             });
     }
 }

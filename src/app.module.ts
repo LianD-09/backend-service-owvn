@@ -15,7 +15,7 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/role.guard';
 import { JwtAccessGuard } from './auth/guards/jwt-access.guard';
 import { JwtAccessStrategy } from './auth/strategies/jwt-access.strategy';
-import { ConfirmModule } from './confirm/confirm.module';
+import { ConfirmModule } from './models/confirm/confirm.module';
 
 registerEnumGlobal();
 

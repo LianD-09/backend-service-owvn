@@ -37,6 +37,13 @@ export class JwtAccessStrategy extends PassportStrategy(
             statusCode: HttpStatus.FORBIDDEN,
           });
         }
+
+        if (!user.isVerified) {
+          throw new BaseException({
+            message: 'Account must be verified email first',
+            statusCode: HttpStatus.FORBIDDEN,
+          });
+        }
         return { data: user, role: Role.ADMIN };
 
       case Role.USER:
@@ -48,6 +55,12 @@ export class JwtAccessStrategy extends PassportStrategy(
             statusCode: HttpStatus.FORBIDDEN,
           });
         }
+        if (!user.isVerified) {
+          throw new BaseException({
+            message: 'Account must be verified email first',
+            statusCode: HttpStatus.FORBIDDEN,
+          });
+        }
         if (user.status === Status.LOCKED) {
           throw new BaseException({
             message: 'Account locked.',
@@ -56,7 +69,7 @@ export class JwtAccessStrategy extends PassportStrategy(
         }
 
         return { data: user, role: Role.USER };
-        
+
       default:
         throw new BaseException({
           message: 'This user role is not existed',

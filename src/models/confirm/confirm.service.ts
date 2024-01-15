@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { JwtPayloadEmail } from '../common/models/jwt-payload.model';
+import { JwtPayloadEmail } from '../../common/models/jwt-payload.model';
 
 @Injectable()
 export class ConfirmService {
@@ -22,7 +22,7 @@ export class ConfirmService {
                 secret: process.env.AUTH_JWT_SECRET,
             });
 
-            return payload;
+            return payload as JwtPayloadEmail;
         }
         catch (e) {
             return null;

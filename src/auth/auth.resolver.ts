@@ -13,7 +13,8 @@ import { CreateUserInput } from '../models/user/dto/create-user.input';
 import { Admin } from '../models/admin/admin.model';
 import { CreateAdminInput } from '../models/admin/dto/create-admin.input';
 import { Status } from '@prisma/client';
-import { MailService } from '../mail/mail.service';
+import { MailService } from '../models/mail/mail.service';
+import { ConfirmService } from '../models/confirm/confirm.service';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -22,7 +23,8 @@ export class AuthResolver {
     private readonly prismaService: PrismaService,
     private readonly adminService: AdminService,
     private readonly userService: UserService,
-    private readonly mailService: MailService
+    private readonly mailService: MailService,
+    private readonly confirmService: ConfirmService,
   ) { }
 
   @Mutation(() => Auth, { name: 'AdminLogin' })
@@ -111,12 +113,60 @@ export class AuthResolver {
 
   @Mutation(() => User, { name: 'UserSignUp' })
   async userSignup(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return await this.userService.create(createUserInput);
+    const { email, userName } = createUserInput;
+    const userExist = await this.userService.findBy({ email, userName });
+    if (userExist) {
+      throw new BaseException({
+        message: 'User has already existed',
+        statusCode: HttpStatus.BAD_REQUEST
+      })
+    }
+
+    const token = await this.confirmService.generateEmailConfirmToken(
+      {
+        email,
+        userName,
+        role: Role.USER
+      }
+    );
+
+    const newUser = await this.userService.create(createUserInput);
+    if (newUser) {
+      const context = {
+        name: createUserInput.userName,
+        url: `${process.env.MAIL_CONFIRM_URL}?token=${token}`
+      };
+      await this.mailService.sendEmail(
+        [createUserInput.email],
+        `Backend Service - Email confirmation`,
+        context,
+      );
+
+      return newUser;
+    }
   }
 
   @Mutation(() => Admin, { name: 'AdminSignUp' })
   async adminSignup(@Args('createAdminInput') createAdminInput: CreateAdminInput) {
-    const token = '';
+    const { email, userName } = createAdminInput
+    const adminExist = await this.adminService.findBy({ email, userName });
+    if (adminExist) {
+      throw new BaseException({
+        message: 'Admin has already existed',
+        statusCode: HttpStatus.BAD_REQUEST
+      })
+    }
+
+    const token = await this.confirmService.generateEmailConfirmToken(
+      {
+        email,
+        userName,
+        role: Role.ADMIN
+      }
+    );
+
+    const newAdmin = await this.adminService.create(createAdminInput);
+
     const context = {
       name: createAdminInput.userName,
       url: `${process.env.MAIL_CONFIRM_URL}?token=${token}`
@@ -127,6 +177,6 @@ export class AuthResolver {
       context,
     );
 
-    return await this.adminService.create(createAdminInput);
+    return newAdmin
   }
 }

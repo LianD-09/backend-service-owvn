@@ -13,7 +13,6 @@ type Query {
 type User {
   id: Float!
   userName: String!
-  password: String!
   fullName: String!
   dob: String!
   phone: String!
@@ -35,10 +34,9 @@ enum Status {
 type Admin {
   id: Float!
   userName: String!
-  password: String!
   fullName: String!
   dob: String!
-  phone: String!
+  phone: String
   email: String!
 }
 
@@ -95,7 +93,7 @@ input CreateUserInput {
   phone: String!
   email: String!
   gender: Gender!
-  status: Status!
+  status: Status
 }
 
 input CreateAdminInput {
