@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { Gender, Status } from '@prisma/client';
-import { IsEmail, IsEnum, IsOptional, IsString, Length, Matches, MaxLength, MinLength } from 'class-validator';
+import { Gender } from '@prisma/client';
+import { IsEmail, IsEnum, IsString, Length, Matches, MaxLength, MinLength } from 'class-validator';
 
 @InputType()
 export class CreateUserInput {
@@ -35,9 +35,4 @@ export class CreateUserInput {
   @Field(() => Gender, {})
   @IsEnum(Gender)
   gender: Gender;
-
-  @Field(() => Status, { nullable: true })
-  @IsEnum(Status)
-  @IsOptional()
-  status?: Status;
 }

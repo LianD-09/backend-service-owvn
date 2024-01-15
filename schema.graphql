@@ -2,77 +2,68 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Query {
-  GetUserProfile: User!
-  ListUser: [User!]!
-  GetOneUser(id: Int!): User!
-  ListAdmin: [Admin!]!
-  GetOneAdmin(id: Int!): Admin!
-}
-
-type User {
-  id: Float!
-  userName: String!
-  fullName: String!
-  dob: String!
-  phone: String!
-  email: String!
-  gender: Gender!
-  status: Status!
-}
-
-enum Gender {
-  MALE
-  FEMALE
-}
-
-enum Status {
-  ACTIVE
-  LOCKED
-}
-
 type Admin {
-  id: Float!
-  userName: String!
-  fullName: String!
   dob: String!
-  phone: String
   email: String!
-}
-
-type Mutation {
-  UpdateProfile(updateUserInput: UpdateUserInput!): User!
-  UpdateUser(id: Float!, updateUserInput: UpdateUserInput!): User!
-  DeleteUser(id: Int!): User!
-  UpdateUserStatus(id: Float!, status: String!): User!
-  UpdateAdmin(id: Float!, updateAdminInput: UpdateAdminInput!): Admin!
-  DeleteAdmin(id: Int!): Admin!
-  AdminLogin(dto: AuthDto!): AdminLoginRes!
-  UserLogin(dto: AuthDto!): AdminLoginRes!
-  UserSignUp(createUserInput: CreateUserInput!): User!
-  AdminSignUp(createAdminInput: CreateAdminInput!): Admin!
-}
-
-input UpdateUserInput {
-  fullName: String
-  dob: String
+  fullName: String!
+  id: Int!
   phone: String
-  email: String
-  token: String
-  gender: Gender
-}
-
-input UpdateAdminInput {
-  fullName: String
-  dob: String
-  phone: String
-  email: String
-  token: String
+  userName: String!
 }
 
 type AdminLoginRes {
-  token: String!
   role: Role
+  token: String!
+}
+
+input AuthDto {
+  password: String!
+  userName: String!
+}
+
+input CreateAdminInput {
+  dob: String!
+  email: String!
+  fullName: String!
+  password: String!
+  phone: String!
+  userName: String!
+}
+
+input CreateUserInput {
+  dob: String!
+  email: String!
+  fullName: String!
+  gender: Gender!
+  password: String!
+  phone: String!
+  userName: String!
+}
+
+enum Gender {
+  FEMALE
+  MALE
+}
+
+type Mutation {
+  AdminLogin(dto: AuthDto!): AdminLoginRes!
+  AdminSignUp(createAdminInput: CreateAdminInput!): Admin!
+  DeleteAdmin(id: Int!): Admin!
+  DeleteUser(id: Int!): User!
+  UpdateAdmin(id: Int!, updateAdminInput: UpdateAdminInput!): Admin!
+  UpdateProfile(updateUserInput: UpdateUserInput!): User!
+  UpdateUser(id: Int!, updateUserInput: UpdateUserInput!): User!
+  UpdateUserStatus(id: Int!, status: String!): User!
+  UserLogin(dto: AuthDto!): AdminLoginRes!
+  UserSignUp(createUserInput: CreateUserInput!): User!
+}
+
+type Query {
+  GetOneAdmin(id: Int!): Admin!
+  GetOneUser(id: Int!): User!
+  GetUserProfile: User!
+  ListAdmin: [Admin!]!
+  ListUser: [User!]!
 }
 
 enum Role {
@@ -80,27 +71,35 @@ enum Role {
   USER
 }
 
-input AuthDto {
-  userName: String!
-  password: String!
+enum Status {
+  ACTIVE
+  LOCKED
 }
 
-input CreateUserInput {
-  userName: String!
-  password: String!
-  fullName: String!
+input UpdateAdminInput {
+  dob: String
+  email: String
+  fullName: String
+  phone: String
+  token: String
+}
+
+input UpdateUserInput {
+  dob: String
+  email: String
+  fullName: String
+  gender: Gender
+  phone: String
+  token: String
+}
+
+type User {
   dob: String!
-  phone: String!
   email: String!
+  fullName: String!
   gender: Gender!
-  status: Status
-}
-
-input CreateAdminInput {
-  userName: String!
-  password: String!
-  fullName: String!
-  dob: String!
+  id: Int!
   phone: String!
-  email: String!
+  status: Status!
+  userName: String!
 }

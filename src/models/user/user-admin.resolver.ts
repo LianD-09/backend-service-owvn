@@ -4,7 +4,7 @@ import { User } from './user.model';
 import { UpdateUserInput } from './dto/update-user.input';
 import { SetRole } from '../../auth/decorators/set-role.decorator';
 import { Role } from '../../common/enums/common.enums';
-import { UseGuards } from '@nestjs/common';
+import { ParseEnumPipe, UseGuards } from '@nestjs/common';
 import { JwtAccessGuard } from '../../auth/guards/jwt-access.guard';
 import { RolesGuard } from '../../auth/guards/role.guard';
 import { Status } from '@prisma/client';
@@ -50,7 +50,7 @@ export class UserAdminResolver {
   @UseGuards(JwtAccessGuard, RolesGuard)
   async updateUserStatus(
     @Args('id') id: number,
-    @Args('status') status: Status) {
+    @Args('status', new ParseEnumPipe(Status)) status: Status) {
     return await this.userService.updateStatus(id, status);
   }
 }

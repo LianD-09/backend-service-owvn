@@ -26,13 +26,17 @@ registerEnumGlobal();
     AdminModule,
     AuthModule,
     PrismaModule,
+    ConfirmModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],
       autoSchemaFile: 'schema.graphql',
-      playground: false
+      playground: false,
+      sortSchema: true,
+      buildSchemaOptions: {
+        numberScalarMode: 'integer',
+      },
     }),
-    ConfirmModule,
   ],
   controllers: [AppController],
   providers: [
