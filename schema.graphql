@@ -1,0 +1,108 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  GetUserProfile: User!
+  ListUser: [User!]!
+  GetOneUser(id: Int!): User!
+  ListAdmin: [Admin!]!
+  GetOneAdmin(id: Int!): Admin!
+}
+
+type User {
+  id: Float!
+  userName: String!
+  password: String!
+  fullName: String!
+  dob: String!
+  phone: String!
+  email: String!
+  gender: Gender!
+  status: Status!
+}
+
+enum Gender {
+  MALE
+  FEMALE
+}
+
+enum Status {
+  ACTIVE
+  LOCKED
+}
+
+type Admin {
+  id: Float!
+  userName: String!
+  password: String!
+  fullName: String!
+  dob: String!
+  phone: String!
+  email: String!
+}
+
+type Mutation {
+  UpdateProfile(updateUserInput: UpdateUserInput!): User!
+  UpdateUser(id: Float!, updateUserInput: UpdateUserInput!): User!
+  DeleteUser(id: Int!): User!
+  UpdateUserStatus(id: Float!, status: String!): User!
+  UpdateAdmin(id: Float!, updateAdminInput: UpdateAdminInput!): Admin!
+  DeleteAdmin(id: Int!): Admin!
+  AdminLogin(dto: AuthDto!): AdminLoginRes!
+  UserLogin(dto: AuthDto!): AdminLoginRes!
+  UserSignUp(createUserInput: CreateUserInput!): User!
+  AdminSignUp(createAdminInput: CreateAdminInput!): Admin!
+}
+
+input UpdateUserInput {
+  fullName: String
+  dob: String
+  phone: String
+  email: String
+  token: String
+  gender: Gender
+}
+
+input UpdateAdminInput {
+  fullName: String
+  dob: String
+  phone: String
+  email: String
+  token: String
+}
+
+type AdminLoginRes {
+  token: String!
+  role: Role
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+input AuthDto {
+  userName: String!
+  password: String!
+}
+
+input CreateUserInput {
+  userName: String!
+  password: String!
+  fullName: String!
+  dob: String!
+  phone: String!
+  email: String!
+  gender: Gender!
+  status: Status!
+}
+
+input CreateAdminInput {
+  userName: String!
+  password: String!
+  fullName: String!
+  dob: String!
+  phone: String!
+  email: String!
+}
