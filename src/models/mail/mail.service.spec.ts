@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MailService } from './mail.service';
 
-describe('NodeMailerService', () => {
+describe('MailService', () => {
   let service: MailService;
 
   beforeEach(async () => {
