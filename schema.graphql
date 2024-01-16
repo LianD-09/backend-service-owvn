@@ -59,8 +59,8 @@ type Mutation {
 }
 
 type Query {
-  GetOneAdmin(id: Int!): Admin!
-  GetOneUser(id: Int!): User!
+  GetOneAdmin(id: Int!): Admin
+  GetOneUser(id: Int!): User
   GetUserProfile: User!
   ListAdmin: [Admin!]!
   ListUser: [User!]!
