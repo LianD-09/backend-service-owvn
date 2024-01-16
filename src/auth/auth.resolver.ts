@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { Auth } from './auth.model';
 import { AuthDto } from './dto/auth.dto';
 import { PrismaService } from '../prisma/prisma.service';
-import { HttpStatus } from '@nestjs/common';
+import { HttpStatus, Inject } from '@nestjs/common';
 import { Role } from '../common/enums/common.enums';
 import { AdminService } from '../models/admin/admin.service';
 import { UserService } from '../models/user/user.service';
@@ -15,6 +15,9 @@ import { CreateAdminInput } from '../models/admin/dto/create-admin.input';
 import { Status } from '@prisma/client';
 import { MailService } from '../models/mail/mail.service';
 import { ConfirmService } from '../models/confirm/confirm.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { CacheStorageType } from '../common/types/types';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -25,6 +28,7 @@ export class AuthResolver {
     private readonly userService: UserService,
     private readonly mailService: MailService,
     private readonly confirmService: ConfirmService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) { }
 
   @Mutation(() => Auth, { name: 'AdminLogin' })
@@ -136,6 +140,18 @@ export class AuthResolver {
         name: createUserInput.userName,
         url: `${process.env.MAIL_CONFIRM_URL}?token=${token}`
       };
+
+      const data: CacheStorageType = {
+        email: email,
+        isVerified: false
+      }
+
+      await this.cacheManager.set(
+        token,
+        data,
+        parseInt(process.env.MAIL_TOKEN_EXPIRED_TIME) * 1000
+      );
+
       await this.mailService.sendEmail(
         [createUserInput.email],
         `Backend Service - Email confirmation`,

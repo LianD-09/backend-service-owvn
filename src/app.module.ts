@@ -16,6 +16,7 @@ import { RolesGuard } from './auth/guards/role.guard';
 import { JwtAccessGuard } from './auth/guards/jwt-access.guard';
 import { JwtAccessStrategy } from './auth/strategies/jwt-access.strategy';
 import { ConfirmModule } from './models/confirm/confirm.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 registerEnumGlobal();
 
@@ -27,6 +28,12 @@ registerEnumGlobal();
     AuthModule,
     PrismaModule,
     ConfirmModule,
+    CacheModule.register({
+      isGlobal: true,
+      // Store-specific configuration:
+      host: 'localhost',
+      port: 6379,
+    }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       typePaths: ['./**/*.graphql'],

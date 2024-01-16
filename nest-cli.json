@@ -8,6 +8,7 @@
       "**/*.hbs",
       "**/*.graphql"
     ],
-    "watchAssets": true
+    "watchAssets": true,
+    "manualRestart": true
   }
 }

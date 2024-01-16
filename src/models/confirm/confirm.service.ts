@@ -11,6 +11,7 @@ export class ConfirmService {
     async generateEmailConfirmToken(payload: JwtPayloadEmail) {
         const token = this.jwtService.sign(payload, {
             secret: process.env.AUTH_JWT_SECRET,
+            expiresIn: `${process.env.MAIL_TOKEN_EXPIRED_TIME}s`
         })
 
         return token;

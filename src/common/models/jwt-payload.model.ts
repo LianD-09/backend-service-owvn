@@ -16,4 +16,8 @@ export class JwtPayloadEmail {
     email: string;
 
     role: Role;
+    
+    iat?: number;
+
+    exp?: number;
 }

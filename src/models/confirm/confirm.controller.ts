@@ -1,14 +1,18 @@
-import { Controller, Get, HttpStatus, Query } from '@nestjs/common';
+import { Controller, Get, HttpStatus, Inject, Query } from '@nestjs/common';
 import { ConfirmService } from './confirm.service';
 import { BaseException } from '../../common/filters/exception.filter';
 import { Role } from '../../common/enums/common.enums';
 import { PrismaService } from '../../prisma/prisma.service';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { CacheStorageType } from '../../common/types/types';
 
 @Controller('confirm')
 export class ConfirmController {
     constructor(
         private readonly confirmService: ConfirmService,
-        private readonly prismaService: PrismaService
+        private readonly prismaService: PrismaService,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) { }
 
     @Get()
@@ -16,11 +20,29 @@ export class ConfirmController {
         @Query('token') token: string
     ) {
         const payload = await this.confirmService.decodeConfirmationToken(token);
-        if (!payload) {
+        const verified = await this.cacheManager.get<CacheStorageType>(token);
+
+        if (!payload || !verified) {
             throw new BaseException({
                 message: 'Confirm url invalid',
                 statusCode: HttpStatus.NOT_FOUND
             })
+        }
+        else if (verified.isVerified) {
+            throw new BaseException({
+                message: 'This email has been verified!',
+                statusCode: HttpStatus.BAD_REQUEST
+            })
+        }
+        else {
+            await this.cacheManager.set(
+                token,
+                {
+                    ...verified,
+                    isVerified: true
+                },
+                payload.exp * 1000 - Date.now()
+            )
         }
 
         switch (payload.role) {
