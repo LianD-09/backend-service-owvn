@@ -182,17 +182,30 @@ export class AuthResolver {
     );
 
     const newAdmin = await this.adminService.create(createAdminInput);
+    if (newAdmin) {
+      const context = {
+        name: createAdminInput.userName,
+        url: `${process.env.MAIL_CONFIRM_URL}?token=${token}`
+      };
 
-    const context = {
-      name: createAdminInput.userName,
-      url: `${process.env.MAIL_CONFIRM_URL}?token=${token}`
-    };
-    await this.mailService.sendEmail(
-      [createAdminInput.email],
-      `Backend Service - Email confirmation`,
-      context,
-    );
+      const data: CacheStorageType = {
+        email: email,
+        isVerified: false
+      }
 
-    return newAdmin
+      await this.cacheManager.set(
+        token,
+        data,
+        parseInt(process.env.MAIL_TOKEN_EXPIRED_TIME) * 1000
+      );
+
+      await this.mailService.sendEmail(
+        [createAdminInput.email],
+        `Backend Service - Email confirmation`,
+        context,
+      );
+
+      return newAdmin;
+    }
   }
 }
