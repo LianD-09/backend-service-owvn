@@ -22,26 +22,26 @@ enum Gender {
 
 model User {
   id         Int     @id @default(autoincrement())
-  userName   String  @unique
+  userName   String  @unique @map("user_name")
   password   String
-  fullName   String
+  fullName   String  @map("full_name")
   dob        String
   phone      String
   email      String  @unique
   gender     Gender
   status     Status  @default(ACTIVE)
   token      String?
-  isVerified Boolean @default(false)
+  isVerified Boolean @default(false) @map("is_verified")
 }
 
 model Admin {
   id         Int     @id @default(autoincrement())
-  userName   String  @unique
+  userName   String  @unique @map("user_name")
   password   String
-  fullName   String
+  fullName   String  @map("full_name")
   dob        String
   email      String  @unique
   phone      String?
   token      String?
-  isVerified Boolean @default(false)
+  isVerified Boolean @default(false) @map("is_verified")
 }

@@ -44,7 +44,7 @@ export class AuthResolver {
         });
       }
 
-      const isAuthernticated = await this.authService.compareAuth(password, adminExist.password);
+      const isAuthenticated = await this.authService.compareAuth(password, adminExist.password);
 
       const payload = { sub: adminExist.id, role: Role.ADMIN };
       const token = await this.authService.generateToken(payload);
@@ -53,7 +53,7 @@ export class AuthResolver {
         token: token,
       });
 
-      if (isAuthernticated) {
+      if (isAuthenticated) {
         return {
           token: token,
           role: Role.ADMIN,
@@ -89,7 +89,7 @@ export class AuthResolver {
           statusCode: HttpStatus.BAD_REQUEST,
         });
       }
-      const isAuthernticated = await this.authService.compareAuth(password, userExist.password);
+      const isAuthenticated = await this.authService.compareAuth(password, userExist.password);
 
       const payload = { sub: userExist.id, role: Role.USER };
       const token = await this.authService.generateToken(payload);
@@ -98,7 +98,7 @@ export class AuthResolver {
         token: token,
       });
 
-      if (isAuthernticated) {
+      if (isAuthenticated) {
         return {
           token: token,
           role: Role.USER,

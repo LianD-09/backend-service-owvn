@@ -14,7 +14,19 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
             ],
             errorFormat: 'pretty',
         });
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        this.$on('query', (event: any) => {
+            const queryLog = {
+                query: event.query,
+                duration: event.duration + ' ms',
+            };
+            this.logger.debug(JSON.stringify(queryLog));
+        })
     }
+
+
 
     async onModuleInit(): Promise<any> {
         await this.$connect();

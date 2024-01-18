@@ -57,8 +57,7 @@ export class LoggerInterceptor implements NestInterceptor {
                 }
 
                 this.logger.debug(
-                    `Time: ${Date.now() - now} ms`,
-                    logData
+                    JSON.stringify(logData)
                 );
 
                 return res;

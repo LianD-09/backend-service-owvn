@@ -21,7 +21,7 @@ export class UserUserResolver {
   async getProfile(
     @CurrentUser() user: User
   ) {
-    return await this.userService.findOne(user.id);
+    return user;
   }
 
   @Mutation(() => User, { name: 'UpdateProfile' })

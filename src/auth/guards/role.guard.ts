@@ -24,7 +24,7 @@ export class RolesGuard implements CanActivate {
       return true;
     } else {
       throw new BaseException({
-        message: 'Authentication error. Please try again.',
+        message: 'Request denied. You have no permission to implement this action',
         statusCode: HttpStatus.FORBIDDEN,
       });
     }
